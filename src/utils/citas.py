@@ -3,15 +3,9 @@ from classes.medico import Medico
 from classes.cita import Cita
 from datetime import datetime
 
-pacientes = (
-    {}
-)  # Aca se guarda los pacientes, ej: {"N00544575": Paciente('N00544575', 'Paolo Reyes', 18), "N00544576": Paciente('N00544576', 'María García', 25)}
-medicos = (
-    {}
-)  # Aca se guarda los medicos, ej: {"M001": Medico('M001', 'Dr. Juan Pérez', 'Cardiología'), "M002": Medico('M002', 'Dra. Ana López', 'Pediatría')}
-historial_citas = (
-    []
-)  # Aca se guarda las citas, ej: [Cita('C001', Paciente('N00544575', 'Paolo Reyes', 18), Medico('M001', 'Dr. Juan Pérez', 'Cardiología'), '2023-10-01 10:00:00', 'Consulta de rutina')]
+pacientes = {}
+medicos = {}
+historial_citas = []
 secuencia_citas = 1
 
 

@@ -17,4 +17,4 @@ class Medico:
         return self._especialidad
 
     def resumen(self) -> str:
-        return f"Médico [Código: {self._codigo}] Dr(a). {self._nombre} - Especialidad: {self._especialidad}" # Esto nos devuelve: Médico [Código: 001] Dr(a). Juan Pérez - Especialidad: Cardiología
+        return f"Médico [Código: {self._codigo}] Dr(a). {self._nombre} - Especialidad: {self._especialidad}"
