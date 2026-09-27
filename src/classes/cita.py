@@ -11,7 +11,9 @@ class Cita:
         fecha: str,
         motivo: str = "",
     ):
-        self._codigo = str(codigo).strip()
+        self._codigo = str(
+            codigo
+        ).strip()  # "N00 54 45 75" -> "N00544575" = strip borra los espaciados
         self._paciente = paciente
         self._medico = medico
         self._fecha = str(fecha).strip()
@@ -20,19 +22,19 @@ class Cita:
         self._diagnostico = ""
 
     @property
-    def codigo(self) -> str:
+    def codigo(self):
         return self._codigo
 
     @property
-    def paciente(self) -> Paciente:
+    def paciente(self):
         return self._paciente
 
     @property
-    def medico(self) -> Medico:
+    def medico(self):
         return self._medico
 
     @property
-    def fecha(self) -> str:
+    def fecha(self):
         return self._fecha
 
     def completar_atencion(self, diagnostico: str):
@@ -45,6 +47,7 @@ class Cita:
             f"  Paciente : {self._paciente.nombre} (Código: {self._paciente.codigo})\n"
             f"  Médico   : Dr(a). {self._medico.nombre} ({self._medico.especialidad})"
         )
+
         if self._motivo:
             info += f"\n  Motivo   : {self._motivo}"
         if self._diagnostico:

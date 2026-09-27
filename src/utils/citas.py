@@ -3,8 +3,8 @@ from classes.medico import Medico
 from classes.cita import Cita
 from datetime import datetime
 
-pacientes = {}
-medicos = {}
+pacientes = []
+medicos = []
 historial_citas = []
 secuencia_citas = 1
 
@@ -26,7 +26,9 @@ def registrar_paciente_menu():
         if not codigo:
             print("[ERROR] El código no puede estar vacío.")
             return
-        if codigo in pacientes:
+
+        existe = list(filter(lambda p: p.codigo.lower() == codigo.lower(), pacientes))
+        if existe:
             print(f"[ERROR] El paciente con código {codigo} ya existe.")
             return
 
@@ -35,7 +37,8 @@ def registrar_paciente_menu():
         edad = int(edad_str)
 
         nuevo_paciente = crear_persona("paciente", codigo, nombre, edad)
-        pacientes[codigo] = nuevo_paciente
+
+        pacientes.append(nuevo_paciente)
         print(f"[OK] {nuevo_paciente.resumen()} registrado correctamente.")
 
     except ValueError as err:
@@ -48,7 +51,9 @@ def registrar_medico_menu():
     if not codigo:
         print("[ERROR] El código no puede estar vacío.")
         return
-    if codigo in medicos:
+
+    existe = list(filter(lambda m: m.codigo.lower() == codigo.lower(), medicos))
+    if existe:
         print(f"[ERROR] El médico con código {codigo} ya existe.")
         return
 
@@ -59,7 +64,8 @@ def registrar_medico_menu():
         return
 
     nuevo_medico = crear_persona("medico", codigo, nombre, especialidad)
-    medicos[codigo] = nuevo_medico
+
+    medicos.append(nuevo_medico)
     print(f"[OK] {nuevo_medico.resumen()} registrado correctamente.")
 
 
@@ -67,10 +73,13 @@ def buscar_por_codigo_menu():
     print("\n--- BUSCAR POR CÓDIGO (RF03) ---")
     codigo = input("Ingrese el código a buscar (Paciente o Médico): ").strip()
 
-    if codigo in pacientes:
-        print(f"[ENCONTRADO - PACIENTE]: {pacientes[codigo].resumen()}")
-    elif codigo in medicos:
-        print(f"[ENCONTRADO - MÉDICO]: {medicos[codigo].resumen()}")
+    p_encontrado = list(filter(lambda p: p.codigo.lower() == codigo.lower(), pacientes))
+    m_encontrado = list(filter(lambda m: m.codigo.lower() == codigo.lower(), medicos))
+
+    if p_encontrado:
+        print(f"[ENCONTRADO - PACIENTE]: {p_encontrado[0].resumen()}")
+    elif m_encontrado:
+        print(f"[ENCONTRADO - MÉDICO]: {m_encontrado[0].resumen()}")
     else:
         print(
             f"[ERROR] No se encontró ninguna entidad registrada con el código '{codigo}'."
@@ -80,15 +89,22 @@ def buscar_por_codigo_menu():
 def agendar_cita_menu():
     global secuencia_citas
     print("\n--- PROGRAMAR CITA (RF04) ---")
+
     cod_paciente = input("Ingrese código del paciente: ").strip()
-    if cod_paciente not in pacientes:
+    p_encontrado = list(
+        filter(lambda p: p.codigo.lower() == cod_paciente.lower(), pacientes)
+    )
+    if not p_encontrado:
         print(
             f"[ERROR] No existe paciente con código '{cod_paciente}'. Debe registrarlo primero."
         )
         return
 
     cod_medico = input("Ingrese código del médico: ").strip()
-    if cod_medico not in medicos:
+    m_encontrado = list(
+        filter(lambda m: m.codigo.lower() == cod_medico.lower(), medicos)
+    )
+    if not m_encontrado:
         print(
             f"[ERROR] No existe médico con código '{cod_medico}'. Debe registrarlo primero."
         )
@@ -101,14 +117,13 @@ def agendar_cita_menu():
     motivo = input("Ingrese motivo de la consulta: ").strip()
 
     cod_cita = f"C{secuencia_citas:03d}"
-    nueva_cita = Cita(
-        cod_cita, pacientes[cod_paciente], medicos[cod_medico], fecha, motivo
-    )
+
+    nueva_cita = Cita(cod_cita, p_encontrado[0], m_encontrado[0], fecha, motivo)
     historial_citas.append(nueva_cita)
     secuencia_citas += 1
 
     print(
-        f"[OK] Cita {cod_cita} programada exitosamente para {pacientes[cod_paciente].nombre}."
+        f"[OK] Cita {cod_cita} programada exitosamente para {p_encontrado[0].nombre}."
     )
 
 
@@ -135,9 +150,7 @@ def buscar_por_especialidad_menu():
     especialidad = input("Ingrese la especialidad a buscar: ").strip()
 
     medicos_encontrados = list(
-        filter(
-            lambda m: especialidad.lower() in m.especialidad.lower(), medicos.values()
-        )
+        filter(lambda m: especialidad.lower() in m.especialidad.lower(), medicos)
     )
 
     if not medicos_encontrados:

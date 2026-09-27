@@ -1,8 +1,8 @@
 class Medico:
     def __init__(self, codigo: str, nombre: str, especialidad: str):
-        self._codigo = str(codigo).strip()
-        self._nombre = str(nombre).strip()
-        self._especialidad = str(especialidad).strip()
+        self._codigo = codigo
+        self._nombre = nombre
+        self._especialidad = especialidad
 
     @property
     def codigo(self) -> str:
@@ -10,7 +10,7 @@ class Medico:
 
     @property
     def nombre(self) -> str:
-        return self._nombre
+        return self._nombre  # nos devuelve el nombre del paciente
 
     @property
     def especialidad(self) -> str:

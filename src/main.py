@@ -8,7 +8,6 @@ from utils.citas import (
     consultar_historial_citas_menu,
 )
 
-
 def menu_principal():
     while True:
         print("\n========================================")
@@ -41,7 +40,7 @@ def menu_principal():
             consultar_historial_citas_menu()
         elif opcion == "8":
             print("\nSaliendo del sistema Kawsay... ¡Hasta luego!")
-            break
+            break 
         else:
             print("\n[!] Opción no válida. Por favor, intente de nuevo.")
 
